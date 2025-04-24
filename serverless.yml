@@ -1,0 +1,27 @@
+service: express-serverless
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: ap-southeast-1
+  profile: default
+
+package:
+  exclude:
+    - .git/**
+    - .vscode/**
+    - .serverless
+    - node_modules/**
+
+functions:
+  main:
+    handler: dist/index.handler
+    events:
+      - http:
+          cors: true
+          path: '/{proxy+}'
+          method: any
