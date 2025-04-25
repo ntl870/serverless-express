@@ -1,27 +1,41 @@
 service: express-serverless
 
-plugins:
-  - serverless-offline
-
 provider:
   name: aws
   runtime: nodejs20.x
-  stage: dev
   region: ap-southeast-1
-  profile: default
-
+  environment:
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_NAME: ${env:DB_NAME}
+    NODE_ENV: production
+    
 package:
-  exclude:
-    - .git/**
-    - .vscode/**
-    - .serverless
-    - node_modules/**
+  patterns:
+    - "!node_modules/**"
+    - "!.git/**"
+    - "!.vscode/**"
 
 functions:
-  main:
-    handler: dist/index.handler
+  api:
+    handler: src/index.handler
     events:
       - http:
           cors: true
           path: '/{proxy+}'
           method: any
+
+plugins:
+  - serverless-offline
+  
+build:
+  esbuild:
+    bundle: true
+    minify: false
+    sourcemap: true
+    platform: node
+    target: node20
+
+useDotenv: true

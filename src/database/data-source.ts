@@ -1,7 +1,7 @@
-import "dotenv/config";
 import { DataSource } from "typeorm";
+import { User } from "../entities/User";
 
-export const AppDataSource = new DataSource({
+const AppDataSource = new DataSource({
   type: "postgres",
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT || "5432"),
@@ -9,11 +9,9 @@ export const AppDataSource = new DataSource({
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
   logging: true,
-  entities: ["src/entities/**/*.ts"],
+  entities: [User],
   subscribers: [],
-  migrations: ["src/migrations/**/*.ts"],
   synchronize: false,
-  migrationsRun: false,
 });
 
 export const initializeDatabase = async () => {
@@ -28,3 +26,5 @@ export const initializeDatabase = async () => {
     throw error;
   }
 };
+
+export default AppDataSource;
