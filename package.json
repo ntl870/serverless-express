@@ -5,6 +5,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "sls offline",
+    "deploy": "sls deploy",
     "migration:run": "./src/scripts/migrations.sh run",
     "migration:generate": "./src/scripts/migrations.sh generate",
     "migration:create": "./src/scripts/migrations.sh create"
