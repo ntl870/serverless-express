@@ -34,4 +34,7 @@ export class User {
 
   @Column({ nullable: true, type: "varchar" })
   email: string;
+
+  @Column({ nullable: true, type: "enum", enum: ["male", "female"] })
+  gender: "male" | "female";
 }

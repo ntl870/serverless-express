@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e # Exit immediately if a command exits with a non-zero status
 
 # Get the directory where the script is located
 SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
@@ -27,10 +28,15 @@ fi
 COMMAND=$1
 MIGRATION_NAME=$2
 
+handle_error() {
+    echo "Error: $1 command failed"
+    exit 1
+}
+
 case "$COMMAND" in
 run)
     echo "Running migrations..."
-    pnpm typeorm-ts-node-commonjs migration:run -d src/database/data-source-local.ts
+    pnpm typeorm-ts-node-commonjs migration:run -d src/database/data-source-local.ts || handle_error "Migration run"
     ;;
 create)
     if [ -z "$MIGRATION_NAME" ]; then
@@ -38,7 +44,7 @@ create)
         exit 1
     fi
     echo "Creating migration: $MIGRATION_NAME"
-    npx typeorm-ts-node-commonjs migration:create "src/migrations/$MIGRATION_NAME"
+    npx typeorm-ts-node-commonjs migration:create "src/migrations/$MIGRATION_NAME" || handle_error "Migration create"
     ;;
 generate)
     if [ -z "$MIGRATION_NAME" ]; then
@@ -46,11 +52,11 @@ generate)
         exit 1
     fi
     echo "Generating migration: $MIGRATION_NAME"
-    npx typeorm-ts-node-commonjs migration:generate "src/migrations/$MIGRATION_NAME" -d src/database/data-source-local.ts
+    npx typeorm-ts-node-commonjs migration:generate "src/migrations/$MIGRATION_NAME" -d src/database/data-source-local.ts || handle_error "Migration generate"
     ;;
 revert)
     echo "Reverting last migration..."
-    npx typeorm-ts-node-commonjs migration:revert -d src/database/data-source-local.ts
+    npx typeorm-ts-node-commonjs migration:revert -d src/database/data-source-local.ts || handle_error "Migration revert"
     ;;
 *)
     echo "Unknown command: $COMMAND"
