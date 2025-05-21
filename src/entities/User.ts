@@ -31,4 +31,7 @@ export class User {
 
   @Column({ nullable: true, type: "varchar" })
   job: string;
+
+  @Column({ nullable: true, type: "varchar" })
+  email: string;
 }

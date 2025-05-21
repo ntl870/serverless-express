@@ -3,7 +3,6 @@ import "dotenv/config";
 import "reflect-metadata";
 import express from "express";
 import serverless from "serverless-http";
-import "reflect-metadata";
 import { User } from "./entities/User";
 import { initializeDatabase } from "./database/data-source";
 
