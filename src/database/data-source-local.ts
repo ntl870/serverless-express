@@ -13,6 +13,9 @@ const AppDataSource = new DataSource({
   subscribers: [],
   migrations: ["src/migrations/**/*.ts"],
   synchronize: false,
+  extra: {
+    family: 4,
+  },
 });
 
 export default AppDataSource;
